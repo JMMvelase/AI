@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avatar Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+   
+      Your browser does not support the video tag.
+    </video>
+    
+    <div id="chat-area">
+      <div id="messages"></div>
+      <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('user-input').value;
+      if (!input) return;
+
+      addMessage('You: ' + input);
+      document.getElementById('user-input').value = '';
+
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input })
+      });
+      const data = await response.json();
+      addMessage('AI: ' + data.response);
+
+      // Trigger TTS for response
+      fetch('/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: data.response })
+      });
+    }
+
+    function addMessage(text) {
+      const messages = document.getElementById('messages');
+      const message = document.createElement('div');
+      message.textContent = text;
+      messages.appendChild(message);
+    }
+  </script>
+</body>
+</html>

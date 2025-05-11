@@ -12,7 +12,7 @@ engine = pyttsx3.init()
 engine.setProperty('voice', engine.getProperty('voices')[1].id)
 engine.setProperty('rate', 150)
 engine.setProperty('volume', 0.9)
-
+0
 # Init Pygame
 pygame.init()
 screen = pygame.display.set_mode((800, 600))

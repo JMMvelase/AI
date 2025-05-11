@@ -3,6 +3,9 @@ import pyttsx3
 import threading
 import google.generativeai as genai
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = Flask(__name__)
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Avatar Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Ask the Assistant</h1>
+        <textarea id="userInput" placeholder="Type your question here..."></textarea>
+        <button onclick="sendMessage()">Send</button>
+        <p id="responseText"></p>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById("userInput").value;
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("responseText").innerText = data.response;
+                speakText(data.response);
+            });
+        }
+
+        function speakText(text) {
+            fetch("/tts", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text })
+            });
+        }
+    </script>
+</body>
+</html>
